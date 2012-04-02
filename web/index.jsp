@@ -32,5 +32,6 @@
         <%
         }
         %>
+        <a href="enter/">Enter</a>
     </body>
 </html>

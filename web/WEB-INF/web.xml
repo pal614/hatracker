@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
-
     <!-- Remote API provides full access to data for developers. -->
+    <filter>
+        <description>Authentication Filter</description>
+        <filter-name>Auth</filter-name>
+        <filter-class>hatracker.auth.StaticAuthenticationFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>Auth</filter-name>
+        <url-pattern>/enter/</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
     <servlet>
         <display-name>Remote API Servlet</display-name>
         <servlet-name>RemoteApiServlet</servlet-name>
