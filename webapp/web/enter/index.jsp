@@ -12,9 +12,14 @@
         <title>Entering Symptoms</title>
     </head>
     <body>
-        <form>
-            <label for="SomeParam">Enter Some Param:</label>
-            <input name="SomeParam"/>
+        <form action="../">
+            <div>
+                <label for="SomeParam">Enter Some Param:</label>
+                <input name="SomeParam"/>
+            </div>
+            <div>
+                <input type="submit" value="Done"/>
+            </div>
         </form>
     </body>
 </html>
