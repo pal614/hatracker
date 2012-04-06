@@ -37,6 +37,7 @@ public class User
         user.setProperty("openId", openId);
         user.setUnindexedProperty("gender", gender);
         Key uk = ds.put(trans, user);
+        trans.commit();
         return uk.getId();
     }
 }
