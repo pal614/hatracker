@@ -1,7 +1,9 @@
 package hatracker.auth;
 
+import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import hatracher.dao.User;
 import java.io.IOException;
 import java.security.Principal;
 import javax.servlet.Filter;
@@ -40,17 +42,29 @@ public class StaticAuthenticationFilter implements Filter
     {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
-        UserService userService = UserServiceFactory.getUserService();
+        
+//        Principal p = AuthUtil.getUserId(httpRequest);
         Principal p = httpRequest.getUserPrincipal();
-        String thisURL = httpRequest.getRequestURI();
 
         if (p == null)
         {
+            String thisURL = httpRequest.getRequestURI();
+            UserService userService = UserServiceFactory.getUserService();
             String loginURL = userService.createLoginURL(thisURL);
             httpResponse.sendRedirect(loginURL);
+//            AuthUtil.redirectToLogin(httpRequest, httpResponse);
         } else
         {
-            chain.doFilter(request, response);
+            String userId = p.getName();
+            Entity user = User.getUser(userId);
+            if (user == null)
+            {
+                httpResponse.sendRedirect("/adduser.jsp");
+            }
+            else
+            {
+                chain.doFilter(request, response);
+            }
         }
     }
 
