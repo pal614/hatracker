@@ -2,10 +2,8 @@ package hatracker.auth;
 
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import java.io.IOException;
 import java.security.Principal;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Collection of static methods covering Authentication, Authorization and Accounting
@@ -13,23 +11,29 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class AuthUtil
 {
-    public static Principal getUserId(HttpServletRequest request)
+    public static String getOpenId(HttpServletRequest request)
     {
+        String openId = null;
         Principal p = request.getUserPrincipal();
-        String openId = p.getName();
-        return p;
+        if (p != null)
+        {
+            openId = p.getName();
+        }
+        return openId;
     }
     
-    public static void redirectToLogin(HttpServletRequest request, HttpServletResponse response) throws IOException
+    public static String getLoginURL(String thisURL)
     {
-        String thisURL = request.getRequestURI();
         UserService userService = UserServiceFactory.getUserService();
         String loginURL = userService.createLoginURL(thisURL);
-        response.sendRedirect(loginURL);
+        return loginURL;
     }
     
-    static boolean isRegistered(String openId)
+    public static String getLogoutURL(String thisURL)
     {
-        return true;
+        UserService userService = UserServiceFactory.getUserService();
+        String logoutURL = userService.createLogoutURL(thisURL);
+        return logoutURL;
     }
+
 }

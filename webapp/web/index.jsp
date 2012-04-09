@@ -1,12 +1,4 @@
-<%-- 
-    Document   : index
-    Created on : Nov 19, 2011, 2:49:23 PM
-    Author     : pal
---%>
-
-<%@page import="java.security.Principal"%>
-<%@page import="com.google.appengine.api.users.UserService"%>
-<%@page import="com.google.appengine.api.users.UserServiceFactory"%>
+<%@page import="hatracker.auth.AuthUtil"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -17,18 +9,17 @@
     <body>
         <h1>Hello World II!</h1>
         <%
-        UserService userService = UserServiceFactory.getUserService();
-        Principal p = request.getUserPrincipal();
+        String userId = AuthUtil.getOpenId(request);
         String thisURL = request.getRequestURI();
 
-        if (p != null)
+        if (userId != null)
         {
-            %><p>Hello, <%=request.getUserPrincipal().getName()%>!
-                You can <a href=" <%=userService.createLogoutURL(thisURL)%>">
+            %><p>Hello, <%=userId%>!
+                You can <a href=" <%=AuthUtil.getLogoutURL(thisURL)%>">
                     sign out</a>.</p>
             <%
         } else {
-            %><p>Please <a href="<%=userService.createLoginURL(thisURL)%>">sign in</a>.</p>
+            %><p>Please <a href="<%=AuthUtil.getLoginURL(thisURL)%>">sign in</a>.</p>
         <%
         }
         %>
